@@ -6,12 +6,12 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.IO;
+using System.Net;
 
 string selection = string.Empty;
 while (selection != "e")
 {
     printMenu();
-    selection = Console.ReadLine();
 
     switch (selection)
     {
@@ -167,8 +167,9 @@ while (selection != "e")
             break;
     }
     Console.WriteLine("'e' to exit");
-    Console.ReadLine();
+    selection = Console.ReadLine();
 }
+
 #region utility
 void printMenu()
 {
@@ -203,26 +204,131 @@ List<double> dataToDoubleList(string data, string splitOn)
 #endregion
 
 #region day 1
-void day1a() //
+void day1a() //68787
 {
-    
+    List<string> calories = dataToList(getData("1"), Environment.NewLine);
+    int currentTotal = 0;
+    int maxTotal = 0;
+    foreach (string s in calories)
+    {
+        if (s != "")
+        {
+            int x = int.Parse(s);
+            currentTotal += x;
+        }
+        else
+        {
+            if (currentTotal > maxTotal)
+                maxTotal = currentTotal;
+            currentTotal = 0;
+        }
+    }
+
+    print(maxTotal.ToString());
+
 }
 
-void day1b() //
+void day1b() //198041
 {
-    
+    List<string> calories = dataToList(getData("1"), Environment.NewLine);
+    List<int> totals = new List<int>();
+    int currentTotal = 0;
+    int maxTotal = 0;
+    foreach (string s in calories)
+    {
+        if (s != "")
+        {
+            int x = int.Parse(s);
+            currentTotal += x;
+        }
+        else
+        {
+            totals.Add(currentTotal);
+            if (currentTotal > maxTotal)
+                maxTotal = currentTotal;
+            currentTotal = 0;
+        }
+    }
+    totals.Sort();
+    totals.Reverse();
+
+    print((totals[0] + totals[1] + totals[2]).ToString());
 }
 #endregion
 
 #region day 2
-void day2a() //
+void day2a() //12772
 {
-    
+    List<string> rounds = dataToList(getData("2"), Environment.NewLine);
+    int score = 0;
+    //A X = ROCK
+    //B Y = PAPER
+    //C Z = SCISSORS
+    foreach(string r in rounds)
+    {
+        List<string> x = r.Split(" ").ToList();
+        score += x[1] == "X" ? 1 : x[1] == "Y" ? 2 : 3;
+        if (x[0] == "A")
+        {
+            score += x[1] == "X" ? 3 : x[1] == "Y" ? 6 : 0;
+        }
+        else if (x[0] == "B")
+        {
+            score += x[1] == "X" ? 0 : x[1] == "Y" ? 3 : 6;
+        }
+        else
+        {
+            score += x[1] == "X" ? 6 : x[1] == "Y" ? 0 : 3;
+        }
+    }
+
+    print(score.ToString());
 }
 
-void day2b() //
+void day2b() //11618
 {
-    
+    List<string> rounds = dataToList(getData("2"), Environment.NewLine);
+    int score = 0;
+    //A = ROCK
+    //B = PAPER
+    //C = SCISSORS
+    //X = WIN
+    //Y = TIE
+    //Z = LOSE
+    foreach (string r in rounds)
+    {
+        List<string> x = r.Split(" ").ToList();
+
+        if (x[0] == "A")
+        {
+            x[1] = x[1] == "X" ? "Z" : x[1] == "Y" ? "X" : "Y";
+        }
+        else if (x[0] == "B")
+        {
+            x[1] = x[1] == "X" ? "X" : x[1] == "Y" ? "Y" : "Z";
+        }
+        else
+        {
+            x[1] = x[1] == "X" ? "Y" : x[1] == "Y" ? "Z" : "X";
+        }
+
+        score += x[1] == "X" ? 1 : x[1] == "Y" ? 2 : 3;
+
+        if (x[0] == "A")
+        {
+            score += x[1] == "X" ? 3 : x[1] == "Y" ? 6 : 0;
+        }
+        else if (x[0] == "B")
+        {
+            score += x[1] == "X" ? 0 : x[1] == "Y" ? 3 : 6;
+        }
+        else
+        {
+            score += x[1] == "X" ? 6 : x[1] == "Y" ? 0 : 3;
+        }
+    }
+
+    print(score.ToString());
 }
 #endregion
 
